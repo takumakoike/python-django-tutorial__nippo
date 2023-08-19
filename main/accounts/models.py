@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstracBaseUser
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -23,7 +23,7 @@ class UserManager(BaseUserManager):
         user.staff = True
         user.save()
 
-class User(AbstracBaseUser):
+class User(AbstractBaseUser):
     email = models.EmailField(
         verbose_name = "Eメールアドレス",
         max_length = 255,

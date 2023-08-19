@@ -23,7 +23,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {"fields": ("email", "password")}),
         ("Permissions", {"fields": ("staff", "admin",)}),
     )
-    
+
     add_fieldsets = (
         None, {
             "classes": ("wide",),
@@ -31,4 +31,4 @@ class UserAdmin(BaseUserAdmin):
         }
     )
 
-admin.site.register(User)
+admin.site.register(User, UserAdmin)

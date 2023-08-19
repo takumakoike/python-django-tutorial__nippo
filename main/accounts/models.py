@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstracBaseUser
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -22,8 +22,18 @@ class UserManager(BaseUserManager):
         )
         user.staff = True
         user.save()
+        return user
 
-class User(AbstracBaseUser):
+    def create_superuser(self, email, password):
+        user = self.create_user(
+            email,
+            password = password,
+        )
+        user.staff = True
+        user.admin = True
+        user.save(using = self.db)
+        return user
+class User(AbstractBaseUser):
     email = models.EmailField(
         verbose_name = "Eメールアドレス",
         max_length = 255,
@@ -35,12 +45,14 @@ class User(AbstracBaseUser):
 
     USERNAME_FIELD = "email"
 
+    objects = UserManager()
+
     def __str__(self):
         return self.email
     def has_perm(self, perm, obj=None):
         return self.admin
     def has_module_perms(self, app_label):
-        return self.admin
+        return self.admin   
 
     @property
     def is_staff(self):

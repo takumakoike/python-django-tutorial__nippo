@@ -4,6 +4,7 @@ from django.views.generic.edit import CreateView, DeleteView,UpdateView
 from .models import NippoModel
 from .forms import NippoFormClass, NippoModelForm
 from django.urls import reverse, reverse_lazy
+from django.db.models import Q
 
 # Create your views here.
 class NippoListView(ListView):

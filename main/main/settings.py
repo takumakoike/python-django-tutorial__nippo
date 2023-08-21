@@ -31,18 +31,21 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.auth',
-    'django.contrib.messages',
-    'django.contrib.sites',
     'django.contrib.admin',
+    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.messages',
     'django.contrib.staticfiles',
-    'nippo',
-    "accounts",
+    #django-allauth
+    'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount'
+    'allauth.socialaccount',
+
+    #apps
+    'nippo',
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -133,8 +136,32 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "accounts.User"
 
+
 AHTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AutheticationBackend",
 ]
 SITE_ID = 1
+
+#ユーザーネームつかわない
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+
+#認証にはメールアドレスを使用
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+
+#ログイン後のリダイレクト設定
+from django.urls import reverse_lazy
+LOGIN_REDIRECT_URL = reverse_lazy("nippo-list")
+
+#ログアウト後のリダイレクト設定
+ACCOUNT_LOGOUT_REDIRECT_URL = reverse_lazy("account_login")
+
+#メールアドレス確認済みの必要を設定
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+#即ログアウト
+ACCOUNT_LOGOUT_ON_GET = True
+
+EMAIL_BACKEND = "django.core.mail.backends.consle.EmailBackend"
